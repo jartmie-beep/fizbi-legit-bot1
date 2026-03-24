@@ -5,5 +5,5 @@ module.exports = {
     EMBED_COLOR: 0x00FF00,
     LOGO_URL: 'https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/p88hv2qj_Gemini_Generated_Image_2yd1z22yd1z22yd1.png',
     TICKET_KEYWORD: 'ticket',
-    LEGIT_CHECK_CHANNEL: '\u2705\ufe0f\uff1alegit-check'
+    LEGIT_CHECK_CHANNEL: 'legit-check'
 };
