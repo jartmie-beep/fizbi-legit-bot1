@@ -1,6 +1,3 @@
-Skopiuj TYLKO TO co jest poniżej (bez żadnych instrukcji):
-
-index.js:
 
 require('dotenv').config();
 var d = require('discord.js');
