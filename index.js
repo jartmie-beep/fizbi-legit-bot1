@@ -36,7 +36,7 @@ var mt = i.fields.getTextInputValue('m');
 var e = new d.EmbedBuilder()
 .setTitle('✅ Robux SHOP™ x LEGIT CHECK')
 .setColor(0x00FF00)
-.setDescription('• 🛒 *xInformacje o zamowieniu:*\n\n📦 *xProdukt:* __'+pr+'__\n🔢 *xIlosc:* __'+il+'__\n💵 *xKwota:* __'+kw+' PLN__\n💳 *xMetoda platnosci:* __'+mt+'__\n\n🛒 *xKupujacy*\n<@'+bid+'>\n\n🛍️ *xSprzedajacy*\n<@'+c.SELLER_USER_ID+'>')
+.setDescription('• 🛒 xInformacje o zamowieniu:\n\n📦 xProdukt: **'+pr+'**\n🔢 xIlosc: **'+il+'**\n💵 xKwota: **'+kw+' PLN**\n💳 xMetoda platnosci: **'+mt+'**\n\n🛒 xKupujacy                    🛍️ xSprzedajacy\n<@'+bid+'>                    <@'+c.SELLER_USER_ID+'>')
 .setImage('https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/0cp52prw_Gemini_Generated_Image_2yd1z22yd1z22yd1.png')
 .setFooter({text:'Robux SHOP'});
 await ch.send({embeds:[e]});
