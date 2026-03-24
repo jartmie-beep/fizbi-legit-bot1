@@ -1,4 +1,3 @@
-
 require('dotenv').config();
 var d = require('discord.js');
 var c = require('./config');
@@ -30,7 +29,16 @@ if(i.isModalSubmit() && i.customId.indexOf('lc_')===0){
 var bid = i.customId.split('_')[1];
 var ch = i.guild.channels.cache.find(function(x){return x.name.toLowerCase().indexOf('legit-check')!==-1;});
 if(!ch) return i.reply({content:'Brak kanalu',ephemeral:true});
-var e = new d.EmbedBuilder().setTitle('LEGIT CHECK').setColor(0x00FF00).setDescription('Produkt: '+i.fields.getTextInputValue('p')+'\nIlosc: '+i.fields.getTextInputValue('i')+'\nKwota: '+i.fields.getTextInputValue('k')+' PLN\nMetoda: '+i.fields.getTextInputValue('m')+'\n\nKupujacy: <@'+bid+'>\nSprzedajacy: <@'+c.SELLER_USER_ID+'>').setFooter({text:'Robux SHOP'});
+var pr = i.fields.getTextInputValue('p');
+var il = i.fields.getTextInputValue('i');
+var kw = i.fields.getTextInputValue('k');
+var mt = i.fields.getTextInputValue('m');
+var e = new d.EmbedBuilder()
+.setTitle('✅ Robux SHOP™ x LEGIT CHECK')
+.setColor(0x00FF00)
+.setDescription('• 🛒 *xInformacje o zamowieniu:*\n\n📦 *xProdukt:* __'+pr+'__\n🔢 *xIlosc:* __'+il+'__\n💵 *xKwota:* __'+kw+' PLN__\n💳 *xMetoda platnosci:* __'+mt+'__\n\n🛒 *xKupujacy*\n<@'+bid+'>\n\n🛍️ *xSprzedajacy*\n<@'+c.SELLER_USER_ID+'>')
+.setImage('https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/0cp52prw_Gemini_Generated_Image_2yd1z22yd1z22yd1.png')
+.setFooter({text:'Robux SHOP'});
 await ch.send({embeds:[e]});
 await i.reply({content:'Wyslano!',ephemeral:true});
 }
