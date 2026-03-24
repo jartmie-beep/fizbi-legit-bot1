@@ -1,8 +1,7 @@
-Wejdź na github.com w swoim repo
-Przy pliku index.js kliknij Delete (usuń go)
-Kliknij Add file → Create new file
-Nazwa: index.js
-Przepisz ręcznie (NIE kopiuj!) ten kod:
+Skopiuj TYLKO TO co jest poniżej (bez żadnych instrukcji):
+
+index.js:
+
 require('dotenv').config();
 var d = require('discord.js');
 var c = require('./config');
