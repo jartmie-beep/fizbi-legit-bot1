@@ -1,3 +1,15 @@
+
+📄 config.js
+module.exports = {
+    OWNER_ROLE_NAME: 'OWNER',
+    SELLER_USER_ID: '1485338157011701930',
+    SHOP_NAME: 'Robux SHOP',
+    EMBED_COLOR: 0x00FF00,
+    LOGO_URL: 'https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/p88hv2qj_Gemini_Generated_Image_2yd1z22yd1z22yd1.png',
+    TICKET_KEYWORD: 'ticket',
+    LEGIT_CHECK_CHANNEL: '✅﹕legit-check'
+};
+📄 index.js
 require('dotenv').config();
 const { 
     Client, 
@@ -140,13 +152,13 @@ client.on('interactionCreate', async (interaction) => {
             .setTitle(`✅ ${config.SHOP_NAME}™ × LEGIT CHECK`)
             .setColor(config.EMBED_COLOR)
             .setDescription(
-                `• 🛒 **×Informacje o zamówieniu:**\n\n` +
-                `📦 ×Produkt: __${produkt}__\n` +
-                `🔢 ×Ilość: __${ilosc}__\n` +
-                `💵 ×Kwota: __${kwota} PLN__\n` +
-                `💳 ×Metoda płatności: __${metoda}__\n\n` +
-                `🛒 ×Kupujący ㅤㅤㅤㅤ 🛍️ ×Sprzedający\n` +
-                `<@${buyerId}> ㅤㅤㅤㅤ <@${config.SELLER_USER_ID}>`
+                `• 🛒 *×Informacje o zamówieniu:*\n\n` +
+                `📦 *×Produkt:* __${produkt}__\n` +
+                `🔢 *×Ilość:* __${ilosc}__\n` +
+                `💵 *×Kwota:* __${kwota} PLN__\n` +
+                `💳 *×Metoda płatności:* __${metoda}__\n\n` +
+                `🛒 *×Kupujący* ㅤㅤㅤㅤ 🛍️ *×Sprzedający*\n` +
+                `<@${buyerId}> ㅤㅤㅤㅤㅤㅤ <@${config.SELLER_USER_ID}>`
             )
             .setImage(config.LOGO_URL)
             .setFooter({ text: config.SHOP_NAME });
