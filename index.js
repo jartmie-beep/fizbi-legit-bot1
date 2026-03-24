@@ -1,5 +1,3 @@
-
-📄 index.js (poprawiona wersja)
 require('dotenv').config();
 const { 
     Client, 
