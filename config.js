@@ -4,5 +4,8 @@ module.exports = {
     SHOP_NAME: 'Robux SHOP',
     EMBED_COLOR: 0x00FF00,
     LOGO_URL: '',
-    TICKET_KEYWORD: 'ticket'
+    TICKET_KEYWORD: 'ticket',
+    
+    // Nazwa kanału gdzie wysyłać legit check
+    LEGIT_CHECK_CHANNEL: '✅﹕legit-check'
 };
