@@ -1,3 +1,5 @@
+
+📄 index.js (poprawiona wersja)
 require('dotenv').config();
 const { 
     Client, 
@@ -125,17 +127,40 @@ client.on('interactionCreate', async (interaction) => {
         const kwota = interaction.fields.getTextInputValue('kwota');
         const metoda = interaction.fields.getTextInputValue('metoda');
         
+        // Znajdź kanał legit-check
+        const legitCheckChannel = interaction.guild.channels.cache.find(
+            channel => channel.name.toLowerCase() === config.LEGIT_CHECK_CHANNEL.toLowerCase()
+        );
+        
+        if (!legitCheckChannel) {
+            return interaction.reply({
+                content: `Nie znaleziono kanału #${config.LEGIT_CHECK_CHANNEL}! Utwórz kanał o tej nazwie.`,
+                ephemeral: true
+            });
+        }
+        
         const embed = new EmbedBuilder()
             .setTitle(`✅ ${config.SHOP_NAME}™ × LEGIT CHECK`)
             .setColor(config.EMBED_COLOR)
             .setDescription(
                 `• 🛒 ×Informacje o zamówieniu:\n\n` +
-                `> 📦 ×Produkt: **${produkt}**\n` +
-                `> 🔢 ×Ilość: **${ilosc}**\n` +
-                `> 💵 ×Kwota: **${kwota} PLN**\n` +
-                `> 💳 ×Metoda płatności: **${metoda}**\n\n` +
-                `🛒 ×Kupujący          🛍️ ×Sprzedający\n` +
-                `<@${buyerId}>          <@${config.SELLER_USER_ID}>`
+                `📦 ×Produkt: **${produkt}**\n\n` +
+                `🔢 ×Ilość: **${ilosc}**\n\n` +
+                `💵 ×Kwota: **${kwota} PLN**\n\n` +
+                `💳 ×Metoda płatności: **${metoda}**\n\n` +
+                `ㅤ`
+            )
+            .addFields(
+                { 
+                    name: '🛒 ×Kupujący', 
+                    value: `<@${buyerId}>`, 
+                    inline: true 
+                },
+                { 
+                    name: '🛍️ ×Sprzedający', 
+                    value: `<@${config.SELLER_USER_ID}>`, 
+                    inline: true 
+                }
             )
             .setFooter({ text: config.SHOP_NAME });
         
@@ -143,7 +168,14 @@ client.on('interactionCreate', async (interaction) => {
             embed.setImage(config.LOGO_URL);
         }
         
-        await interaction.reply({ embeds: [embed] });
+        // Wyślij embed na kanał legit-check
+        await legitCheckChannel.send({ embeds: [embed] });
+        
+        // Potwierdź użytkownikowi
+        await interaction.reply({
+            content: `✅ Legit check wysłany na kanał #${config.LEGIT_CHECK_CHANNEL}!`,
+            ephemeral: true
+        });
     }
 });
 
