@@ -140,36 +140,16 @@ client.on('interactionCreate', async (interaction) => {
             .setTitle(`✅ ${config.SHOP_NAME}™ × LEGIT CHECK`)
             .setColor(config.EMBED_COLOR)
             .setDescription(
-                `\n` +
-                `• 🛒 **×Informacje o zamówieniu:**\n` +
-                `ㅤ\n` +
-                `> 📦 ×Produkt: **${produkt}**\n` +
-                `> ㅤ\n` +
-                `> 🔢 ×Ilość: **${ilosc}**\n` +
-                `> ㅤ\n` +
-                `> 💵 ×Kwota: **${kwota} PLN**\n` +
-                `> ㅤ\n` +
-                `> 💳 ×Metoda płatności: **${metoda}**\n` +
-                `ㅤ\n` +
-                `ㅤ`
+                `• 🛒 **×Informacje o zamówieniu:**\n\n` +
+                `📦 ×Produkt: __${produkt}__\n` +
+                `🔢 ×Ilość: __${ilosc}__\n` +
+                `💵 ×Kwota: __${kwota} PLN__\n` +
+                `💳 ×Metoda płatności: __${metoda}__\n\n` +
+                `🛒 ×Kupujący ㅤㅤㅤㅤ 🛍️ ×Sprzedający\n` +
+                `<@${buyerId}> ㅤㅤㅤㅤ <@${config.SELLER_USER_ID}>`
             )
-            .addFields(
-                { 
-                    name: 'ㅤ\n🛒 ×Kupujący', 
-                    value: `<@${buyerId}>`, 
-                    inline: true 
-                },
-                { 
-                    name: 'ㅤ\n🛍️ ×Sprzedający', 
-                    value: `<@${config.SELLER_USER_ID}>`, 
-                    inline: true 
-                }
-            )
-            .setFooter({ text: `\n${config.SHOP_NAME}` });
-        
-        if (config.LOGO_URL && config.LOGO_URL.trim() !== '') {
-            embed.setImage(config.LOGO_URL);
-        }
+            .setImage(config.LOGO_URL)
+            .setFooter({ text: config.SHOP_NAME });
         
         await legitCheckChannel.send({ embeds: [embed] });
         
