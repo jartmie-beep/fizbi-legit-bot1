@@ -1,5 +1,3 @@
-
-📄 config.js
 module.exports = {
     OWNER_ROLE_NAME: 'OWNER',
     SELLER_USER_ID: '1485338157011701930',
@@ -7,168 +5,63 @@ module.exports = {
     EMBED_COLOR: 0x00FF00,
     LOGO_URL: 'https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/p88hv2qj_Gemini_Generated_Image_2yd1z22yd1z22yd1.png',
     TICKET_KEYWORD: 'ticket',
-    LEGIT_CHECK_CHANNEL: '✅﹕legit-check'
+    LEGIT_CHECK_CHANNEL: 'legit-check'
 };
-📄 index.js
+index.js
 require('dotenv').config();
-const { 
-    Client, 
-    GatewayIntentBits, 
-    SlashCommandBuilder, 
-    ModalBuilder, 
-    TextInputBuilder, 
-    TextInputStyle, 
-    ActionRowBuilder, 
-    EmbedBuilder,
-    REST,
-    Routes
-} = require('discord.js');
-const config = require('./config');
+var discord = require('discord.js');
+var config = require('./config');
 
-const client = new Client({ 
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildMembers
-    ] 
-});
+var client = new discord.Client({ intents: [discord.GatewayIntentBits.Guilds, discord.GatewayIntentBits.GuildMessages, discord.GatewayIntentBits.GuildMembers] });
 
-const legitCheckCommand = new SlashCommandBuilder()
+var legitCheckCommand = new discord.SlashCommandBuilder()
     .setName('legitcheck')
-    .setDescription('Tworzy embed z informacjami o zamówieniu (tylko dla OWNER na kanałach ticketowych)')
-    .addUserOption(option =>
-        option.setName('kupujacy')
-            .setDescription('Wybierz kupującego')
-            .setRequired(true)
-    );
+    .setDescription('Tworzy embed z informacjami o zamowieniu')
+    .addUserOption(function(option) { return option.setName('kupujacy').setDescription('Wybierz kupujacego').setRequired(true); });
 
-async function registerCommands() {
-    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
-    
-    try {
-        console.log('Rejestrowanie slash commands...');
-        
-        await rest.put(
-            Routes.applicationCommands(client.user.id),
-            { body: [legitCheckCommand.toJSON()] }
-        );
-        
-        console.log('Slash commands zarejestrowane pomyślnie!');
-    } catch (error) {
-        console.error('Błąd podczas rejestrowania komend:', error);
-    }
-}
-
-client.once('ready', async () => {
-    console.log(`Bot zalogowany jako ${client.user.tag}`);
-    await registerCommands();
+client.once('ready', async function() {
+    console.log('Bot zalogowany jako ' + client.user.tag);
+    var rest = new discord.REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+    await rest.put(discord.Routes.applicationCommands(client.user.id), { body: [legitCheckCommand.toJSON()] });
+    console.log('Komendy zarejestrowane!');
 });
 
-client.on('interactionCreate', async (interaction) => {
+client.on('interactionCreate', async function(interaction) {
     if (interaction.isChatInputCommand() && interaction.commandName === 'legitcheck') {
-        const hasOwnerRole = interaction.member.roles.cache.some(
-            role => role.name === config.OWNER_ROLE_NAME
-        );
-        
-        if (!hasOwnerRole) {
-            return interaction.reply({
-                content: 'Nie masz uprawnień do tej komendy',
-                ephemeral: true
-            });
+        var hasRole = interaction.member.roles.cache.some(function(role) { return role.name === config.OWNER_ROLE_NAME; });
+        if (!hasRole) {
+            return interaction.reply({ content: 'Nie masz uprawnien', ephemeral: true });
         }
-        
-        const channelName = interaction.channel.name.toLowerCase();
-        if (!channelName.includes(config.TICKET_KEYWORD)) {
-            return interaction.reply({
-                content: 'Ta komenda jest dostępna tylko na kanałach ticketowych',
-                ephemeral: true
-            });
+        if (interaction.channel.name.toLowerCase().indexOf(config.TICKET_KEYWORD) === -1) {
+            return interaction.reply({ content: 'Tylko na kanalach ticketowych', ephemeral: true });
         }
-        
-        const buyer = interaction.options.getUser('kupujacy');
-        
-        const modal = new ModalBuilder()
-            .setCustomId(`legitcheck_modal_${buyer.id}`)
-            .setTitle('Legit Check - Informacje o zamówieniu');
-        
-        const produktInput = new TextInputBuilder()
-            .setCustomId('produkt')
-            .setLabel('Produkt')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('np. Robux 1000')
-            .setRequired(true);
-        
-        const iloscInput = new TextInputBuilder()
-            .setCustomId('ilosc')
-            .setLabel('Ilość')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('np. 1')
-            .setRequired(true);
-        
-        const kwotaInput = new TextInputBuilder()
-            .setCustomId('kwota')
-            .setLabel('Kwota (PLN)')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('np. 50')
-            .setRequired(true);
-        
-        const metodaInput = new TextInputBuilder()
-            .setCustomId('metoda')
-            .setLabel('Metoda płatności')
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('np. BLIK, Przelew, PayPal')
-            .setRequired(true);
-        
-        modal.addComponents(
-            new ActionRowBuilder().addComponents(produktInput),
-            new ActionRowBuilder().addComponents(iloscInput),
-            new ActionRowBuilder().addComponents(kwotaInput),
-            new ActionRowBuilder().addComponents(metodaInput)
-        );
-        
+        var buyer = interaction.options.getUser('kupujacy');
+        var modal = new discord.ModalBuilder().setCustomId('lc_' + buyer.id).setTitle('Legit Check');
+        var p1 = new discord.TextInputBuilder().setCustomId('produkt').setLabel('Produkt').setStyle(discord.TextInputStyle.Short).setRequired(true);
+        var p2 = new discord.TextInputBuilder().setCustomId('ilosc').setLabel('Ilosc').setStyle(discord.TextInputStyle.Short).setRequired(true);
+        var p3 = new discord.TextInputBuilder().setCustomId('kwota').setLabel('Kwota PLN').setStyle(discord.TextInputStyle.Short).setRequired(true);
+        var p4 = new discord.TextInputBuilder().setCustomId('metoda').setLabel('Metoda platnosci').setStyle(discord.TextInputStyle.Short).setRequired(true);
+        modal.addComponents(new discord.ActionRowBuilder().addComponents(p1), new discord.ActionRowBuilder().addComponents(p2), new discord.ActionRowBuilder().addComponents(p3), new discord.ActionRowBuilder().addComponents(p4));
         await interaction.showModal(modal);
     }
-    
-    if (interaction.isModalSubmit() && interaction.customId.startsWith('legitcheck_modal_')) {
-        const buyerId = interaction.customId.split('_')[2];
-        
-        const produkt = interaction.fields.getTextInputValue('produkt');
-        const ilosc = interaction.fields.getTextInputValue('ilosc');
-        const kwota = interaction.fields.getTextInputValue('kwota');
-        const metoda = interaction.fields.getTextInputValue('metoda');
-        
-        const legitCheckChannel = interaction.guild.channels.cache.find(
-            channel => channel.name.toLowerCase() === config.LEGIT_CHECK_CHANNEL.toLowerCase()
-        );
-        
-        if (!legitCheckChannel) {
-            return interaction.reply({
-                content: `Nie znaleziono kanału #${config.LEGIT_CHECK_CHANNEL}! Utwórz kanał o tej nazwie.`,
-                ephemeral: true
-            });
+    if (interaction.isModalSubmit() && interaction.customId.indexOf('lc_') === 0) {
+        var odbiorca = interaction.customId.split('_')[1];
+        var prod = interaction.fields.getTextInputValue('produkt');
+        var ile = interaction.fields.getTextInputValue('ilosc');
+        var kasa = interaction.fields.getTextInputValue('kwota');
+        var met = interaction.fields.getTextInputValue('metoda');
+        var kanal = interaction.guild.channels.cache.find(function(ch) { return ch.name.toLowerCase().indexOf(config.LEGIT_CHECK_CHANNEL) !== -1; });
+        if (!kanal) {
+            return interaction.reply({ content: 'Brak kanalu legit-check', ephemeral: true });
         }
-        
-        const embed = new EmbedBuilder()
-            .setTitle(`✅ ${config.SHOP_NAME}™ × LEGIT CHECK`)
+        var embed = new discord.EmbedBuilder()
+            .setTitle('✅ ' + config.SHOP_NAME + ' x LEGIT CHECK')
             .setColor(config.EMBED_COLOR)
-            .setDescription(
-                `• 🛒 *×Informacje o zamówieniu:*\n\n` +
-                `📦 *×Produkt:* __${produkt}__\n` +
-                `🔢 *×Ilość:* __${ilosc}__\n` +
-                `💵 *×Kwota:* __${kwota} PLN__\n` +
-                `💳 *×Metoda płatności:* __${metoda}__\n\n` +
-                `🛒 *×Kupujący* ㅤㅤㅤㅤ 🛍️ *×Sprzedający*\n` +
-                `<@${buyerId}> ㅤㅤㅤㅤㅤㅤ <@${config.SELLER_USER_ID}>`
-            )
-            .setImage(config.LOGO_URL)
+            .setThumbnail(config.LOGO_URL)
+            .setDescription('• 🛒 *xInformacje o zamowieniu:*\n\n📦 *xProdukt:* __' + prod + '__\n🔢 *xIlosc:* __' + ile + '__\n💵 *xKwota:* __' + kasa + ' PLN__\n💳 *xMetoda platnosci:* __' + met + '__\n\n🛒 *xKupujacy*\n<@' + odbiorca + '>\n\n🛍️ *xSprzedajacy*\n<@' + config.SELLER_USER_ID + '>')
             .setFooter({ text: config.SHOP_NAME });
-        
-        await legitCheckChannel.send({ embeds: [embed] });
-        
-        await interaction.reply({
-            content: `✅ Legit check wysłany na kanał #${config.LEGIT_CHECK_CHANNEL}!`,
-            ephemeral: true
-        });
+        await kanal.send({ embeds: [embed] });
+        await interaction.reply({ content: 'Wyslano!', ephemeral: true });
     }
 });
 
