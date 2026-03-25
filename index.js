@@ -1,6 +1,3 @@
-
-index.js:
-
 require('dotenv').config();
 var d = require('discord.js');
 var c = require('./config');
@@ -41,7 +38,7 @@ var e = new d.EmbedBuilder()
 .setColor(0x00FF00)
 .setDescription('• 🛒 xInformacje o zamowieniu:\n\n📦 xProdukt: **'+pr+'**\n🔢 xIlosc: **'+il+'**\n💵 xKwota: **'+kw+' PLN**\n💳 xMetoda platnosci: **'+mt+'**')
 .addFields({name:'🛒 xKupujacy',value:'<@'+bid+'>',inline:true},{name:'🛍️ xSprzedajacy',value:'<@'+c.SELLER_USER_ID+'>',inline:true})
-.setImage('https://image2url.com/r2/default/images/1774449217451-e330583a-359f-41a2-b7e0-8300eab4e4b7.jpg')
+.setImage('https://customer-assets.emergentagent.com/job_legit-check-bot/artifacts/0cp52prw_Gemini_Generated_Image_2yd1z22yd1z22yd1.png')
 .setFooter({text:'Robux SHOP'});
 await ch.send({embeds:[e]});
 await i.reply({content:'Wyslano!',ephemeral:true});
